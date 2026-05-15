@@ -36,11 +36,12 @@ cd /var/www/html
 
 if [ ! -f wp-config.php ]; then
 
-    curl -O https://wordpress.org/latest.tar.gz
+    if [ ! -f /usr/src/wordpress/wp-config-sample.php ]; then
+        echo "WordPress source files are missing." >&2
+        exit 1
+    fi
 
-    tar -xvf latest.tar.gz --strip-components=1
-
-    rm -rf latest.tar.gz
+    cp -a /usr/src/wordpress/. /var/www/html/
 
     cp wp-config-sample.php wp-config.php
 

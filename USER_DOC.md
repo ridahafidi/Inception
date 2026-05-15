@@ -17,10 +17,11 @@
 
 ## Credentials and Secrets
 Create the following files locally (these are ignored by git):
-- `srcs/secrets/db_root_password.txt`
-- `srcs/secrets/db_password.txt`
-- `srcs/secrets/wp_admin_password.txt`
-- `srcs/secrets/wp_user_password.txt`
+- `secrets/db_root_password.txt`
+- `secrets/db_password.txt`
+- `secrets/wp_admin_password.txt`
+- `secrets/wp_user_password.txt`
+- `secrets/credentials.txt`
 
 Update non-secret settings in `srcs/.env`:
 - Domain name, database name/user, and WordPress site/user metadata.

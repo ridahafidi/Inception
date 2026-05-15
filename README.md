@@ -1,12 +1,20 @@
 *This project has been created as part of the 42 curriculum by rhafidi.*
 
 ## Description
-Inception is a small infrastructure composed of Nginx, WordPress (php-fpm), and MariaDB, all running in separate Docker containers and connected through a dedicated Docker network. The stack uses TLS on port 443 only and persists data using named volumes mapped to /home/rhafidi/data.
+Inception is a small infrastructure composed of Nginx, WordPress (php-fpm), and MariaDB, all running in separate Docker containers and connected through a dedicated Docker network. The stack uses TLS on port 443 only and persists data using Docker named volumes.
 
 ## Instructions
 1) Create secrets (see USER_DOC.md) and ensure /etc/hosts contains your domain.
 2) Start: `make up`
 3) Stop: `make down`
+
+## Optional: Docker data-root
+If your evaluator requires data under `/home/rhafidi/data`, configure Docker's data-root:
+1) `sudo mkdir -p /home/rhafidi/data`
+2) `sudo mkdir -p /etc/docker`
+3) `printf '{ "data-root": "/home/rhafidi/data" }\n' | sudo tee /etc/docker/daemon.json`
+4) `sudo systemctl restart docker`
+5) Recreate volumes: `docker compose -f srcs/docker-compose.yml down -v` then `make up`
 
 ## Project Description
 This project builds custom images from Debian bullseye and runs each service in its own container:
