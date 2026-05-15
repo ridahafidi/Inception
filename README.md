@@ -5,16 +5,15 @@ Inception is a small infrastructure composed of Nginx, WordPress (php-fpm), and 
 
 ## Instructions
 1) Create secrets (see USER_DOC.md) and ensure /etc/hosts contains your domain.
-2) Start: `make up`
-3) Stop: `make down`
+2) Create host data directories required by the subject:
+	- `sudo mkdir -p /home/rida/data/mariadb /home/rida/data/wordpress`
+3) Start: `make up`
+4) Stop: `make down`
 
-## Optional: Docker data-root
-If your evaluator requires data under `/home/rhafidi/data`, configure Docker's data-root:
-1) `sudo mkdir -p /home/rhafidi/data`
-2) `sudo mkdir -p /etc/docker`
-3) `printf '{ "data-root": "/home/rhafidi/data" }\n' | sudo tee /etc/docker/daemon.json`
-4) `sudo systemctl restart docker`
-5) Recreate volumes: `docker compose -f srcs/docker-compose.yml down -v` then `make up`
+## Host Data Location
+This project uses Docker named volumes backed by host directories under `/home/rida/data`:
+- MariaDB: `/home/rida/data/mariadb`
+- WordPress: `/home/rida/data/wordpress`
 
 ## Project Description
 This project builds custom images from Debian bullseye and runs each service in its own container:

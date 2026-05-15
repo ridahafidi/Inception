@@ -9,6 +9,14 @@
 - Start: `make up`
 - Stop: `make down`
 
+## Host Data Directories
+This project stores persistent data in Docker named volumes mapped to host directories:
+- `/home/rida/data/mariadb`
+- `/home/rida/data/wordpress`
+
+Create them once before starting:
+- `sudo mkdir -p /home/rida/data/mariadb /home/rida/data/wordpress`
+
 ## Access the Website and Admin Panel
 1) Add a hosts entry pointing your local IP to your domain:
    - `127.0.0.1 rhafidi.42.fr`

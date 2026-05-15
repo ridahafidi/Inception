@@ -7,7 +7,9 @@
 ## Setup From Scratch
 1) Create secrets in `secrets/` (see USER_DOC.md).
 2) Update `srcs/.env` with the site configuration.
-3) Optional: if your evaluator requires data under `/home/rhafidi/data`, configure Docker's data-root or use a symlink to the Docker volumes directory.
+3) Ensure the host data directories exist (required by subject):
+	- `/home/rida/data/mariadb`
+	- `/home/rida/data/wordpress`
 
 ## Build and Launch
 - Build and start: `make up`
@@ -19,8 +21,8 @@
 - Recreate with fresh volumes: `docker compose -f srcs/docker-compose.yml down -v`
 
 ## Data Persistence
-- MariaDB data: Docker named volume `mariadb_data`
-- WordPress files: Docker named volume `wordpress_data`
+- MariaDB data: named volume `mariadb_data` stored under `/home/rida/data/mariadb`
+- WordPress files: named volume `wordpress_data` stored under `/home/rida/data/wordpress`
 
 ## Project Layout
 - `srcs/`: compose file and environment configuration.
