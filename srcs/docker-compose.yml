@@ -4,7 +4,7 @@ services:
     image: nginx:inception
     container_name: nginx
     ports:
-      - "443:443"
+      - "8443:443"
     volumes:
       - wordpress_data:/var/www/html
     networks:
@@ -59,14 +59,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/rida/data/mariadb
+      device: /home/rhafidi/data/mariadb
   wordpress_data:
     name: wordpress_data
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/rida/data/wordpress
+      device: /home/rhafidi/data/wordpress
 
 networks:
   inception:

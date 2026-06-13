@@ -1,5 +1,5 @@
 prepare:
-	mkdir -p /home/rhafidi/data
+	mkdir -p /home/rhafidi/data/mariadb /home/rhafidi/data/wordpress
 
 up: prepare
 	docker compose -f srcs/docker-compose.yml up --build
