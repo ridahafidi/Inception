@@ -1,40 +1,122 @@
-# User Documentation
+# USER DOCUMENTATION
 
 ## Services Provided
-- Nginx: HTTPS entrypoint on port 443.
-- WordPress: PHP application served by php-fpm.
-- MariaDB: relational database for WordPress.
 
-## Start and Stop
-- Start: `make up`
-- Stop: `make down`
+The infrastructure provides:
 
-## Host Data Directories
-This project stores persistent data in Docker named volumes mapped to host directories:
-- `/home/rida/data/mariadb`
-- `/home/rida/data/wordpress`
+* HTTPS Web Server (NGINX)
+* WordPress Website
+* MariaDB Database
 
-Create them once before starting:
-- `sudo mkdir -p /home/rida/data/mariadb /home/rida/data/wordpress`
+---
 
-## Access the Website and Admin Panel
-1) Add a hosts entry pointing your local IP to your domain:
-   - `127.0.0.1 rhafidi.42.fr`
-2) Open `https://rhafidi.42.fr` in your browser.
-3) Admin panel: `https://rhafidi.42.fr/wp-admin`
+## Starting The Project
 
-## Credentials and Secrets
-Create the following files locally (these are ignored by git):
-- `secrets/db_root_password.txt`
-- `secrets/db_password.txt`
-- `secrets/wp_admin_password.txt`
-- `secrets/wp_user_password.txt`
-- `secrets/credentials.txt`
+Run:
 
-Update non-secret settings in `srcs/.env`:
-- Domain name, database name/user, and WordPress site/user metadata.
+```bash
+make
+```
 
-## Check Services
-- List containers: `docker compose -f srcs/docker-compose.yml ps`
-- Logs: `docker compose -f srcs/docker-compose.yml logs -f`
-- Verify HTTPS: open the website and confirm TLS in the browser.
+This builds images and starts all services.
+
+---
+
+## Stopping The Project
+
+Run:
+
+```bash
+make down
+```
+
+---
+
+## Rebuilding The Project
+
+Run:
+
+```bash
+make re
+```
+
+---
+
+## Accessing The Website
+
+Open:
+
+```text
+https://<login>.42.fr
+```
+
+Example:
+
+```text
+https://rhafidi.42.fr
+```
+
+---
+
+## Accessing WordPress Administration
+
+Open:
+
+```text
+https://<login>.42.fr/wp-admin
+```
+
+Log in using the administrator account configured during installation.
+
+---
+
+## Credentials
+
+Sensitive credentials are stored inside the repository secrets directory.
+
+Examples:
+
+```text
+secrets/db_password.txt
+secrets/db_root_password.txt
+secrets/wp_admin_password.txt
+secrets/wp_user_password.txt
+```
+
+Before running `make`, create those files locally under `secrets/` and put the matching password values inside each one.
+
+---
+
+## Checking Service Status
+
+List running containers:
+
+```bash
+docker ps
+```
+
+View logs:
+
+```bash
+docker logs nginx
+docker logs wordpress
+docker logs mariadb
+```
+
+---
+
+## Checking Persistent Data
+
+Database data:
+
+```text
+MariaDB Volume
+```
+
+Website data:
+
+```text
+WordPress Volume
+```
+
+Both persist after container recreation.

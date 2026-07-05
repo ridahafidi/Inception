@@ -1,14 +1,11 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-RUN apt update && \
-    apt install -y mariadb-server mariadb-client && \
-    apt clean
+RUN apt-get update && apt-get install -y mariadb-server
 
-COPY tools/setup.sh /setup.sh
-COPY conf/99-inception.cnf /etc/mysql/mariadb.conf.d/99-inception.cnf
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-RUN chmod +x /setup.sh
+COPY tools/init.sh /init.sh
 
-EXPOSE 3306
+RUN chmod +x /init.sh
 
-ENTRYPOINT ["/setup.sh"]
+ENTRYPOINT ["/init.sh"]

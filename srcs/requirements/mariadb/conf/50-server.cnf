@@ -1,0 +1,7 @@
+[mysqld]
+
+# Accept connections from Docker network
+bind-address = 0.0.0.0
+
+# MariaDB default port
+port = 3306

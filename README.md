@@ -1,35 +1,131 @@
 *This project has been created as part of the 42 curriculum by rhafidi.*
 
+# Inception
+
 ## Description
-Inception is a small infrastructure composed of Nginx, WordPress (php-fpm), and MariaDB, all running in separate Docker containers and connected through a dedicated Docker network. The stack uses TLS on port 443 only and persists data using Docker named volumes.
+
+Inception is a system administration project whose goal is to build a complete web infrastructure using Docker and Docker Compose.
+
+The infrastructure is composed of three isolated services:
+
+* NGINX (TLS termination and reverse proxy)
+* WordPress with PHP-FPM
+* MariaDB
+
+Each service runs in its own container and communicates through a dedicated Docker network.
+
+Persistent data is stored using Docker named volumes.
+
+---
+
+## Project Architecture
+
+Browser (HTTPS:443)
+
+↓
+
+NGINX
+
+↓
+
+FastCGI (wordpress:9000)
+
+↓
+
+WordPress (PHP-FPM)
+
+↓
+
+TCP (mariadb:3306)
+
+↓
+
+MariaDB
+
+---
 
 ## Instructions
-1) Create secrets (see USER_DOC.md) and ensure /etc/hosts contains your domain.
-2) Create host data directories required by the subject:
-	- `sudo mkdir -p /home/rida/data/mariadb /home/rida/data/wordpress`
-3) Start: `make up`
-4) Stop: `make down`
 
-## Host Data Location
-This project uses Docker named volumes backed by host directories under `/home/rida/data`:
-- MariaDB: `/home/rida/data/mariadb`
-- WordPress: `/home/rida/data/wordpress`
+Build and start the infrastructure:
 
-## Project Description
-This project builds custom images from Debian bullseye and runs each service in its own container:
-- Nginx serves HTTPS traffic and forwards PHP requests to WordPress.
-- WordPress runs with php-fpm and installs the site plus two users via wp-cli.
-- MariaDB provides the database using a persistent named volume.
+```bash
+make
+```
 
-### Design comparisons
-- Virtual Machines vs Docker: VMs virtualize an entire OS; Docker isolates processes with shared kernel and lower overhead.
-- Secrets vs Environment Variables: secrets avoid committing sensitive data; env vars are convenient for non-sensitive config.
-- Docker Network vs Host Network: a bridge network isolates services while allowing container name resolution.
-- Docker Volumes vs Bind Mounts: named volumes are managed by Docker and portable; bind mounts are host-path specific.
+Stop containers:
+
+```bash
+make down
+```
+
+Remove containers and volumes:
+
+```bash
+make fclean
+```
+
+Rebuild everything:
+
+```bash
+make re
+```
+
+---
+
+## Main Design Choices
+
+### Virtual Machines vs Docker
+
+Virtual Machines virtualize an entire operating system including its own kernel.
+
+Docker containers share the host kernel and isolate processes through namespaces and cgroups.
+
+Containers start faster, consume fewer resources, and are easier to deploy.
+
+### Secrets vs Environment Variables
+
+Environment variables are suitable for non-sensitive configuration such as usernames and domain names.
+
+Docker Secrets are used for sensitive information such as passwords because they are mounted separately and avoid exposing credentials directly in configuration files.
+
+### Docker Network vs Host Network
+
+Docker networks isolate container communication and provide internal DNS resolution.
+
+Host networking removes this isolation and is forbidden by the project subject.
+
+### Docker Volumes vs Bind Mounts
+
+Docker named volumes are managed by Docker and are portable across environments.
+
+Bind mounts directly expose host directories and are not allowed for WordPress and MariaDB persistent storage in this project.
+
+---
 
 ## Resources
-- Docker documentation: https://docs.docker.com/
-- MariaDB documentation: https://mariadb.com/kb/en/documentation/
-- WordPress documentation: https://developer.wordpress.org/
-- Nginx documentation: https://nginx.org/en/docs/
-- AI usage: used to review the subject requirements and draft documentation and scripts; all changes were reviewed and validated.
+
+Official Docker Documentation:
+https://docs.docker.com
+
+Official Docker Compose Documentation:
+https://docs.docker.com/compose
+
+NGINX Documentation:
+https://nginx.org/en/docs/
+
+MariaDB Documentation:
+https://mariadb.com/kb/en/documentation/
+
+WordPress Documentation:
+https://wordpress.org/documentation/
+
+### AI Usage
+
+AI was used as a learning assistant to:
+
+* Understand Docker concepts.
+* Review configuration choices.
+* Explain networking, volumes, and FastCGI.
+* Validate architectural decisions.
+
+All generated content was manually reviewed, tested, and understood before being integrated into the project.

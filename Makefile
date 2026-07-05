@@ -1,11 +1,22 @@
-prepare:
-	mkdir -p /home/rhafidi/data/mariadb /home/rhafidi/data/wordpress
+NAME=inception
+COMPOSE=docker compose -f srcs/docker-compose.yaml
+DB_VLM_PATH=/home/rhafidi/data/mariadb
+WP_VLM_PATH=/home/rhafidi/data/wordpress
 
-up: prepare
-	docker compose -f srcs/docker-compose.yml up --build
+all:
+	mkdir -p $(DB_VLM_PATH)
+	mkdir -p $(WP_VLM_PATH)
+	$(COMPOSE) up --build
 
 down:
-	docker compose -f srcs/docker-compose.yml down
+	$(COMPOSE) down
 
 clean:
-	docker compose -f srcs/docker-compose.yml down -v --remove-orphans
+	$(COMPOSE) down
+
+fclean:
+	$(COMPOSE) down -v
+
+re: fclean all
+
+.PHONY: all down clean fclean re

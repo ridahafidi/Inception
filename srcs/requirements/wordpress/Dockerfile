@@ -1,29 +1,26 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-RUN apt update && \
-    apt install -y \
-    php-fpm \
-    php-mysql \
-    php-cli \
-    curl \
-    mariadb-client && \
-    apt clean
+RUN apt-get update && apt-get install -y \
+    php8.2-fpm \
+    php8.2-mysql \
+    mariadb-client \
+    wget \
+    curl
 
-RUN curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    -o /usr/local/bin/wp && \
+RUN wget https://wordpress.org/wordpress-6.8.2.tar.gz -O /tmp/wp.tar.gz && \
+    mkdir -p /usr/src/wordpress && \
+    tar -xzf /tmp/wp.tar.gz -C /tmp && \
+    cp -r /tmp/wordpress/* /usr/src/wordpress && \
+    rm -rf /tmp/wp.tar.gz /tmp/wordpress
+
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    -O /usr/local/bin/wp && \
     chmod +x /usr/local/bin/wp
 
-RUN curl -fsSL https://wordpress.org/latest.tar.gz \
-    -o /tmp/wordpress.tar.gz && \
-    mkdir -p /usr/src/wordpress && \
-    tar -xzf /tmp/wordpress.tar.gz -C /usr/src/wordpress --strip-components=1 && \
-    rm -f /tmp/wordpress.tar.gz
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
-COPY ./tools/setup.sh ./setup.sh
+COPY tools/setup.sh /setup.sh
 
-RUN chmod +x setup.sh
-
-EXPOSE 9000
+RUN chmod +x /setup.sh
 
 ENTRYPOINT ["/setup.sh"]
