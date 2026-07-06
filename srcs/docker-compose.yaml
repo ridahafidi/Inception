@@ -13,6 +13,7 @@ services:
       - inception
     secrets:
       - db_password
+      - db_root_password
 
   wordpress:
     build: ./requirements/wordpress
@@ -69,6 +70,9 @@ networks:
 secrets:
   db_password:
     file: ../secrets/db_password.txt
+
+  db_root_password:
+    file: ../secrets/db_root_password.txt
 
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
