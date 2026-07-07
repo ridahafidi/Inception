@@ -3,7 +3,7 @@
 set -e
 
 mkdir -p /run/mysqld
-chown -R mysql:mysql /run/mysqld #/var/lib/mysql
+chown -R mysql:mysql /run/mysqld
 
 DB_PASSWORD=$(cat /run/secrets/db_password)
 ROOT_PASSWORD=$(cat /run/secrets/db_root_password)

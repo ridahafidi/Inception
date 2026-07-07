@@ -8,10 +8,8 @@ RUN apt-get update && apt-get install -y \
     curl
 
 RUN wget https://wordpress.org/wordpress-6.8.2.tar.gz -O /tmp/wp.tar.gz && \
-    mkdir -p /usr/src/wordpress && \
     tar -xzf /tmp/wp.tar.gz -C /tmp && \
-    cp -r /tmp/wordpress/* /usr/src/wordpress && \
-    rm -rf /tmp/wp.tar.gz /tmp/wordpress
+    rm -rf /tmp/wp.tar.gz
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     -O /usr/local/bin/wp && \

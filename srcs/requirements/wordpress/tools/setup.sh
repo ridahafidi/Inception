@@ -12,7 +12,8 @@ WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
 #copy wp files if needed
 if [ ! -f wp-config.php ]; then
-    cp -r /usr/src/wordpress/* /var/www/html/
+    cp -r /tmp/wordpress/* /var/www/html/ &&
+    rm -rf /tmp/wordpress 
 fi
 
 cd /var/www/html
